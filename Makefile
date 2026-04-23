@@ -1,14 +1,25 @@
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -Iinc
 
-SRCS = src/Message.cpp src/ParsingUtils.cpp src/test_parser.cpp
+ifeq ($(OS),Windows_NT)
+LDLIBS += -lws2_32
+endif
+
+SRCS = src/main.cpp \
+	src/Server.cpp \
+	src/Client.cpp \
+	src/Chanel.cpp \
+	src/Command.cpp \
+	src/Message.cpp \
+	src/ParsingUtils.cpp \
+	src/utils.cpp
 OBJS = $(SRCS:src/%.cpp=obj/%.o)
-NAME = test_parser
+NAME = ircserv
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS) $(LDLIBS)
 
 obj/%.o: src/%.cpp
 	@mkdir -p obj
